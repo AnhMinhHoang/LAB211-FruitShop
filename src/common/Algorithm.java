@@ -24,24 +24,24 @@ public class Algorithm {
         String opt;
         do{
             Fruit fruit = new Fruit();
-            String iD = input.String("Enter fruit ID");
+            String iD = input.inputString("Enter fruit ID");
             location = input.findValidID(iD, fruitData);
             if (location >= 0) {
                 String s;
                 s = input.StringMatch("Fruit already exist, add more? (Y/N)", "[YN]");
                 if (s.equals("Y")) {
                     int amount = fruitData.get(location).getQuantity();
-                    fruitData.get(location).setQuantity(amount + input.integer("Enter amount to add"));
+                    fruitData.get(location).setQuantity(amount + input.inputInteger("Enter amount to add"));
                     opt = input.StringMatch("Do you want to add more(Y/N)", "[YN]");
                     continue;
                 }
                 else return;
             }
             fruit.setFruitID(iD);
-            fruit.setFruitName(input.String("Enter fruit name"));
-            fruit.setPrice(input.integer("Enter price"));
-            fruit.setQuantity(input.integer("Enter quantity"));
-            fruit.setOrigin(input.String("Enter origin"));
+            fruit.setFruitName(input.inputString("Enter fruit name"));
+            fruit.setPrice(input.inputInteger("Enter price"));
+            fruit.setQuantity(input.inputInteger("Enter quantity"));
+            fruit.setOrigin(input.inputString("Enter origin"));
             fruitData.add(fruit);
             opt = input.StringMatch("Do you want to add more(Y/N)", "[YN]");
         }
@@ -92,18 +92,18 @@ public class Algorithm {
             display(fruitData);
             choice = input.getChoiceTo(fruitData);
             System.out.println("You selected: "+fruitData.get(choice).getFruitName());
-            total = input.integer("Please input quantity");
+            total = input.inputInteger("Please input quantity");
             while(total > fruitData.get(choice).getQuantity()){
-                total = input.integer("Your quantity is exceeded our roster, Please enter another quantity");
+                total = input.inputInteger("Your quantity is exceeded our roster, Please enter another quantity");
             }
-            temp = fruitData.get(choice).getQuantity();
             Order order = new Order();
             order.setProduct(fruitData.get(choice).getFruitName());
-            order.setQuantity(temp);
+            order.setQuantity(total);
             order.setPrice(fruitData.get(choice).getPrice());
             order.setAmount(order.getPrice(), order.getQuantity());
             location = findExist(orderData, fruitData.get(choice).getFruitName());
             newOrder(orderData, order, location);
+            temp = fruitData.get(choice).getQuantity();
             fruitData.get(choice).setQuantity(temp - total);
             if(fruitData.get(choice).getQuantity() == 0){
                 fruitData.remove(choice);
@@ -111,7 +111,7 @@ public class Algorithm {
             if (!fruitData.isEmpty()) s = input.StringMatch("Do you want to order now(Y/N)", "[YN]");
             if(s.equals("Y") || fruitData.isEmpty()){
                 Customer customer = new Customer();
-                customer.setCustomerName(input.String("Enter your name"));
+                customer.setCustomerName(input.inputString("Enter your name"));
                 hashTable.put(customer.getCustomerName(), orderData);
                 break;
             } 
@@ -131,7 +131,7 @@ public class Algorithm {
                 int price = hashTable.get(key).get(i).getPrice();
                 int amount = hashTable.get(key).get(i).getAmount();
                 total += amount;
-                System.out.printf("%d.%s%6d%7d$%7d$",(i+1), product, quantity, price, amount);
+                System.out.printf("%d.%s%12d%9d$%8d$",(i+1), product, quantity, price, amount);
                 System.out.println("");
             }
             System.out.println("Total: "+total+"$");

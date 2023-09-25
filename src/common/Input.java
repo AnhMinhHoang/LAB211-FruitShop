@@ -5,6 +5,7 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.Fruit;
 
@@ -14,7 +15,7 @@ import model.Fruit;
  */
 public class Input {
     
-    public String String(String title){
+    public String inputString(String title){
         Scanner sc = new Scanner(System.in);
         String s = null;
         while(s == null || s.isEmpty() || s.isBlank()){
@@ -34,7 +35,7 @@ public class Input {
         return s;
     }
     
-    public int integer(String title){
+    public int inputInteger(String title){
         Scanner sc = new Scanner(System.in);
         int n = -1;
         while(n <= 0){
@@ -44,6 +45,7 @@ public class Input {
             }
             catch(Exception e){
                 n = -1;
+                sc.nextLine();
             }
         }
         return n;
@@ -61,8 +63,7 @@ public class Input {
         Scanner sc = new Scanner(System.in);
         int choice;
         do{
-            System.out.print("Enter your choice: ");
-            choice = sc.nextInt() - 1;
+            choice = inputInteger("Enter your choice") - 1;
         }
         while(choice < -1 || choice > fruitData.size() - 1);
         return choice;
